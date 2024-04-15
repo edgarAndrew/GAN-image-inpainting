@@ -39,3 +39,13 @@ python app.py
 Application will be served on - [localhost:5000](http://localhost:5000)
 
 
+#### GPU
+
+If using gpu then, download cuda 9.0 & cuDNN 7.0.5
+```
+pip uninstall tensorflow
+pip install tensorflow-gpu==1.7.0
+```
+
+
+
