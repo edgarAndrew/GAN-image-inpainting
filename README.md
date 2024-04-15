@@ -30,6 +30,7 @@ model_logs/
 #### Install dependencies
 ```
 pip install --no-cache-dir -r requirements.txt
+pip install git+https://github.com/JiahuiYu/neuralgym
 ```
 
 #### Run app
