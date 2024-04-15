@@ -1,0 +1,6 @@
+model_logs
+logs
+data
+venv
+__pycache__
+

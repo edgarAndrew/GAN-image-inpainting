@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Inpainting</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <div>
+        <input type="file" id="fileInput" accept="image/*">
+        
+        <div>
+            <h4>Select Model</h4>
+            <select id="modelSelect">
+                <option value="release_places2_256">release_places2_256</option>
+                <option value="release_celeba_hq_256">release_celeba_hq_256</option>
+            </select>
+        </div>
+
+        <input type="range" id="thicknessSlider" min="1" max="30" value="10">
+        
+    </div>
+    <div>
+        <canvas id="canvas"></canvas>
+        <canvas id="canvas-hidden" hidden></canvas>
+    </div>
+    <div>
+        <button id="sendServer" onclick="sendToServer()">Done</button>
+    </div>
+
+    <div class="output">
+        
+    </div>
+
+    <div>
+        <h3>Model Output</h3>
+        <img id="outputImage" src="" alt="">
+    </div>
+    
+</body>
+</html>
