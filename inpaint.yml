@@ -8,11 +8,11 @@ gpu_type: 'nvidia-tesla-p100'
 
 # parameters
 name: places2_gated_conv_v100  # any name
-model_restore: ''  # logs/places2_gated_conv
-dataset: 'celebahq'  # 'tmnist', 'dtd', 'places2', 'celeba', 'imagenet', 'cityscapes'
+model_restore: 'logs/places2_gated_conv'  # logs/places2_gated_conv
+dataset: 'nfd'  # 'tmnist', 'dtd', 'places2', 'celeba', 'imagenet', 'cityscapes'
 random_crop: False  # Set to false when dataset is 'celebahq', meaning only resize the images to img_shapes, instead of crop img_shapes from a larger raw image. This is useful when you train on images with different resolutions like places2. In these cases, please set random_crop to true.
 val: False  # true if you want to view validation results in tensorboard
-log_dir: logs/full_model_celeba_hq_256
+log_dir: logs/test_model_256
 
 gan: 'sngan'
 gan_loss_alpha: 1
@@ -48,6 +48,10 @@ data_flist:
   imagenet: [
     'data/imagenet/train_shuffled.flist',
     'data/imagenet/validation_static_view.flist',
+  ]
+  nfd: [
+    'data/nfd/train_shuffled.flist',
+    'data/nfd/validation_static_view.flist',
   ]
 
 static_view_size: 30

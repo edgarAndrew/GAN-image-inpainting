@@ -3,4 +3,5 @@ logs
 data
 venv
 __pycache__
+training_data
 

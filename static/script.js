@@ -15,10 +15,10 @@ const doneBtn = document.getElementById('sendServer')
 
 // variables
 let img;
-let maskDataURL
-let canvasDataURL
-let canvasImg
-let maskImg
+let maskDataURL;
+let canvasDataURL;
+let canvasImg;
+let maskImg;
 let isDrawing = false;
 
 fileInput.addEventListener('change', function(e) {
@@ -27,35 +27,45 @@ fileInput.addEventListener('change', function(e) {
     reader.onload = function() {
         img = new Image();
         img.onload = function() {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            canvas_hidden.width = img.width;
-            canvas_hidden.height = img.height;
-            ctx.drawImage(img, 0, 0);
+            // Resize the image to 450x450
+            resizeImageTo450x450(img).then(function(resizedImg) {
+                canvas.width = resizedImg.width;
+                canvas.height = resizedImg.height;
+                canvas_hidden.width = resizedImg.width;
+                canvas_hidden.height = resizedImg.height;
+                ctx.drawImage(resizedImg, 0, 0);
+            }).catch(function(error) {
+                console.error('Error resizing image:', error);
+            });
         }
         img.src = reader.result;
     }
     reader.readAsDataURL(file);
 });
 
-
 canvas.addEventListener('mousedown', function(e) {
     isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
     ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    ctx.moveTo(mouseX, mouseY);
     ctx.strokeStyle = 'white'; // Set brush color to white
     
     ctx2.beginPath();
-    ctx2.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    ctx2.moveTo(mouseX, mouseY);
     ctx2.strokeStyle = 'white'; // Set brush color to white
 });
 
 canvas.addEventListener('mousemove', function(e) {
     if (isDrawing) {
-        ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        ctx.lineTo(mouseX, mouseY);
         ctx.stroke();
 
-        ctx2.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        ctx2.lineTo(mouseX, mouseY);
         ctx2.stroke();
     }
 });
@@ -66,8 +76,8 @@ canvas.addEventListener('mouseup', function() {
 
 
 thicknessSlider.addEventListener('input', function() {
-    ctx.lineWidth = thicknessSlider.value
-    ctx2.lineWidth = thicknessSlider.value
+    ctx.lineWidth = thicknessSlider.value;
+    ctx2.lineWidth = thicknessSlider.value;
 });
 
 
@@ -85,9 +95,12 @@ async function sendToServer() {
 
         const response = await fetch('/process_images', { method: 'POST', body: formData})
         const result = await response.json()
+        
+        // Resize output image to 450x450
         outputImg.src = 'data:image/png;base64,' + result.outputImageData;
-        outputImg.height = img.height
-        outputImg.width = img.width
+        outputImg.width = 450;
+        outputImg.height = 450;
+        
         doneBtn.disabled = false
         
     }catch(error){
@@ -131,3 +144,48 @@ function dataURLtoFile(dataURL, filename) {
 
     return new File([u8arr], filename, { type: mime });
 }
+
+function resizeImageTo450x450(inputImage) {
+    return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 450;
+        canvas.height = 450;
+        const ctx = canvas.getContext('2d');
+        
+        const img = new Image();
+        img.onload = function() {
+            // Calculate aspect ratio
+            const aspectRatio = img.width / img.height;
+            
+            // Determine the resizing dimensions
+            let newWidth, newHeight;
+            if (aspectRatio >= 1) {
+                newWidth = 450;
+                newHeight = 450 / aspectRatio;
+            } else {
+                newWidth = 450 * aspectRatio;
+                newHeight = 450;
+            }
+            
+            // Draw the resized image onto the canvas
+            ctx.drawImage(img, 0, 0, newWidth, newHeight);
+            
+            // Convert canvas content to base64 data URL
+            const resizedDataURL = canvas.toDataURL();
+            
+            // Create new Image object with the resized image
+            const resizedImg = new Image();
+            resizedImg.onload = function() {
+                resolve(resizedImg);
+            };
+            resizedImg.src = resizedDataURL;
+        };
+        img.onerror = function(error) {
+            reject(error);
+        };
+        img.src = inputImage.src; // Assuming inputImage is an Image object
+    });
+}
+
+
+
