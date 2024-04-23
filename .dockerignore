@@ -1,3 +1,10 @@
 venv
 __pycache__
-examples
+/model/examples
+frontend
+/model/data
+venv
+venv_gpu
+__pycache__
+/model/data_flist
+/model/training_data
