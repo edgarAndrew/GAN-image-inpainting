@@ -2,6 +2,9 @@ model_logs
 logs
 data
 venv
+venv_gpu
 __pycache__
+data_flist
 training_data
+generate_flist.py
 
