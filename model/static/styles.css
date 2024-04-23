@@ -78,6 +78,9 @@ button {
 button:hover {
     background-color: rgb(108, 26, 26);
 }
+button:disabled{
+    background-color: #999;
+}
 
 select,
 input[type="range"] {

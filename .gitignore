@@ -1,10 +1,32 @@
-model_logs
-logs
-data
+/model/model_logs
+/model/data
 venv
 venv_gpu
 __pycache__
-data_flist
-training_data
-generate_flist.py
+
+/model/data_flist
+/model/training_data
+
+# dependencies
+/frontend/node_modules
+/frontend/.pnp
+/frontend/.pnp.js
+
+# testing
+/frontend/coverage
+
+# production
+/frontend/build
+
+# misc
+/frontend/.DS_Store
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
 

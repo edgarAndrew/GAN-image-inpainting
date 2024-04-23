@@ -7,12 +7,12 @@ memory_per_job: 4  # number of gpus each job need
 gpu_type: 'nvidia-tesla-p100'
 
 # parameters
-name: test_model5  # any name
+name: test_model  # any name
 model_restore: 'model_logs/release_places2_256'  # logs/places2_gated_conv
 dataset: 'nfd'  # 'tmnist', 'dtd', 'places2', 'celeba', 'imagenet', 'cityscapes'
 random_crop: True  # Set to false when dataset is 'celebahq', meaning only resize the images to img_shapes, instead of crop img_shapes from a larger raw image. This is useful when you train on images with different resolutions like places2. In these cases, please set random_crop to true.
-val: True  # true if you want to view validation results in tensorboard
-log_dir: model_logs/test_model5
+val: True # true if you want to view validation results in tensorboard
+log_dir: model_logs/test5_model
 
 gan: 'sngan'
 gan_loss_alpha: 1
@@ -22,32 +22,25 @@ random_seed: False
 padding: 'SAME'
 
 # training
-train_spe: 50  # Increase steps per epoch
-max_iters: 5  # Decrease total training iterations
+train_spe: 69 # no of samples/ batch size
+max_iters: 8280 # no of epochs * spe
 viz_max_out: 10
-val_psteps: 50 
+val_psteps: 2070 # (no of epochs * spe ) /validation freq
 
 # data
 data_flist:
-  # https://github.com/jiahuiyu/progressive_growing_of_gans_tf
   celebahq: [
     'data/celeba_hq/train_shuffled.flist',
     'data/celeba_hq/validation_static_view.flist'
-  ]
-  # http://mmlab.ie.cuhk.edu.hk/projects/celeba.html, please to use random_crop: True
-  celeba: [
-    'data/celeba/train_shuffled.flist',
-    'data/celeba/validation_static_view.flist'
   ]
   # http://places2.csail.mit.edu/, please download the high-resolution dataset and use random_crop: True
   places2: [
     'data/places2/train_shuffled.flist',
     'data/places2/validation_static_view.flist'
   ]
-  # http://www.image-net.org/, please use random_crop: True
-  imagenet: [
-    'data/imagenet/train_shuffled.flist',
-    'data/imagenet/validation_static_view.flist',
+  nfd: [
+    'data/nfd/train_shuffled.flist',
+    'data/nfd/validation_static_view.flist',
   ]
   nfd: [
     'data/nfd/train_shuffled.flist',

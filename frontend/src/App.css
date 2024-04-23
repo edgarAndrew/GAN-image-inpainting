@@ -1,0 +1,151 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+/* *{
+    padding: 0;
+    margin: 0;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+}
+
+canvas {
+    border: 1px solid black;
+    cursor: crosshair;
+} */
+
+body {
+  font-family: Arial, sans-serif;
+  /* margin: 0;
+  padding: 0; */
+  /* background-color: #f0f0f0; */
+  background-image: url("assets/bg_img.jpg");
+  border: 3px solid blueviolet;
+  padding: 20px 0px;
+  
+  /* max-width: 500px;
+  margin: auto; */
+  
+  text-align: center;
+
+  margin-top: 20px;
+
+  /* display: flex; */
+}
+
+/* .container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+} */
+
+h4{
+  color: white;
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+h3{
+  color: white;
+  background-color: brown;
+  display: inline;
+  margin-top: 100px;
+}
+
+#canvas {
+  display: block;
+  margin: 20px auto;
+  border: 5px solid white;
+  border-radius: 8px;
+  cursor: crosshair;
+
+  /* max-width: 512px;
+  max-height: 512px; */
+}
+
+button {
+  padding: 10px 20px;
+  background-color: brown;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+button:hover {
+  background-color: rgb(108, 26, 26);
+}
+button:disabled{
+  background-color: #999;
+}
+
+select,
+input[type="range"] {
+  margin-bottom: 10px;
+}
+
+select{
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 20px;
+  background-color: brown;
+  color: white;
+  font-family: 'Times New Roman', Times, serif;
+}
+option{
+  background-color: brown;
+  color: white;
+  padding: 10px;
+}
+
+input[type="range"] {
+  padding: 20px;
+}
+
+/* input[type='file']{
+  color: rgba(0, 0, 0, 0)
+} */
+input[type="file"] {
+  border: 1px solid green;
+  text-align: center;
+  /* position: relative;
+  left: auto; */
+  width:132px;
+  /* overflow: hidden; */
+}
+#fileInput::-webkit-file-upload-button {
+  visibility: hidden;
+}
+#fileInput::before {
+  content: 'Select your image';
+  display: inline-block;
+  background: -webkit-linear-gradient(top, brown, grey);
+  color: whitesmoke;
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 15px 8px;
+  /* outline: none; */
+  white-space: nowrap;
+  /* -webkit-user-select: none; */
+  cursor: pointer;
+  /* text-shadow: 1px 1px #fff; */
+  font-weight: 700;
+  font-size: 10pt;
+}
+#fileInput:hover::before {
+  border-color: black;
+}
+#fileInput:active::after {
+  display: none;
+}
+/* #fileInput:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+} */

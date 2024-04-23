@@ -13,10 +13,6 @@ CORS(app)
 def index():
     return render_template('index.html')
 
-@app.route('/test')
-def test():
-    return render_template('test.html')
-
 
 @app.route('/process_images', methods=['POST'])
 def process_images():
@@ -64,6 +60,19 @@ def process_images():
                 'output.png',
                 '--checkpoint_dir',
                 'model_logs/release_celeba_hq_256'
+            ])
+        elif model_name == "nfd_256":
+            subprocess.run([
+                'python',
+                'test.py',
+                '--image',
+                image_path,
+                '--mask',
+                mask_path,
+                '--output',
+                'output.png',
+                '--checkpoint_dir',
+                'model_logs/test5_model'
             ])
         else:
             abort(400, 'Invalid model name')
