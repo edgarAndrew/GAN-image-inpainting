@@ -13,5 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN pip install git+https://github.com/JiahuiYu/neuralgym
 
-COPY . .
+COPY model/ ./model
+WORKDIR /python-docker/model
+
 CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
