@@ -20,11 +20,12 @@ const ModelSelector = () => {
   const dispatch = useDispatch()
 
   const handleChange = (e) =>{
-    dispatch(setModel(e.value))
+    console.log(e.target.value)
+    dispatch(setModel(e.target.value))
   }
   return (
-    <div>
-        <h4>Select Model</h4>
+    <div className='cont2'>
+        <h3>Select Model</h3>
         <select id="modelSelect" defaultValue='nfd_256' onChange={handleChange}>
             {
               models.map((item,index)=>

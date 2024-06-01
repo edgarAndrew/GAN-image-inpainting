@@ -27,6 +27,8 @@ def process_images():
         image = Image.open(image_file)
         mask = Image.open(mask_file)
 
+        print(model_name)
+
 
         # Save images to temporary files
         image_path = 'temp_image.png'
@@ -35,7 +37,7 @@ def process_images():
         mask.save(mask_path)
 
         # Run the TensorFlow model
-        if model_name == "release_places2_256":
+        if model_name == "release_places2_256": 
             subprocess.run([
                 'python',
                 'test.py',
@@ -75,7 +77,7 @@ def process_images():
                 'model_logs/test5_model'
             ])
         else:
-            abort(400, 'Invalid model name')
+            return jsonify({'error': "Provided model does not exist"}), 400
 
         # Read the output image
         with open('output.png', 'rb') as f:

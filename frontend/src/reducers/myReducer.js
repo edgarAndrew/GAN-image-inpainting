@@ -1,12 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
   input_image: '',
   model_output: '',
-  brush_thickness:15,
+  brush_thickness:10,
   model_name:'nfd_256',
   error: '',
+  prevImage:'',
+  currentImage:'',
+  redoFlag:false
 };
 
 export const myReducerSlice = createSlice({
@@ -21,6 +24,7 @@ export const myReducerSlice = createSlice({
     inpaintingSuccess: (state, action) => {
       state.isLoading = false;
       state.model_output = action.payload;
+      state.currentImage = action.payload;
       state.error = '';
     },
     inpaintingFailure: (state, action) => {
@@ -35,6 +39,13 @@ export const myReducerSlice = createSlice({
     },
     setModel:(state,action)=>{
       state.model_name =action.payload
+    },
+    setPrevImage:(state,action)=>{
+      state.prevImage =action.payload
+    },
+    setRedoFlag:(state,action)=>{
+      state.redoFlag = action.payload
+      state.model_output = ''
     }
   },
 });
@@ -45,7 +56,9 @@ export const {
   inpaintingFailure,
   setInputImage,
   setBrushThickness,
-  setModel
+  setModel,
+  setPrevImage,
+  setRedoFlag
 } = myReducerSlice.actions;
 
 export default myReducerSlice.reducer;

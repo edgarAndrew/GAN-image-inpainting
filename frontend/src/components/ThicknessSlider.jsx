@@ -12,7 +12,14 @@ const ThicknessSlider = () => {
   }
 
   return (
-    <input type="range" id="thicknessSlider" min="8" max="40" value={brush_thickness} onChange={handleChange}></input>
+    <div className='cont2'>
+        <h3>Brush Thickeness</h3>
+        <div className='cont3'>
+          <input type="range" id="thicknessSlider" min="5" max="40" value={brush_thickness} onChange={handleChange}></input>
+        </div>
+        
+    </div>
+    
   )
 }
 

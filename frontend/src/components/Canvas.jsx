@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 import { processImage } from '../actions/myActions';
 import { dataURLtoFile } from '../utils';
+import {setRedoFlag} from '../reducers/myReducer'
 
 const Canvas = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,9 @@ const Canvas = () => {
   const [ctx2, setCtx2] = useState(null);
   const [isDrawing,setIsDrawing] = useState(false)
 
-  const {input_image:inputImage,brush_thickness,model_name,model_output,isLoading} = useSelector((state) => state.myReducer)
+  const {input_image:inputImage,brush_thickness,model_name,model_output,isLoading,
+    prevImage,redoFlag,currentImage
+  } = useSelector((state) => state.myReducer)
 
   useEffect(() => {
     const canvasElement = document.getElementById('canvas');
@@ -30,15 +33,46 @@ const Canvas = () => {
     }
   },[brush_thickness])
 
+  // useEffect(() => {
+  //   if (ctx && inputImage) {
+  //     const img = new Image();
+  //     img.onload = function () {
+  //       canvas.width = img.width;
+  //       canvas.height = img.height;
+  //       canvasHidden.width = img.width;
+  //       canvasHidden.height = img.height;
+  //       ctx.drawImage(img, 0, 0);
+  //     };
+  //     img.src = inputImage;
+  //   }
+  // }, [ctx, inputImage]);
+
   useEffect(() => {
     if (ctx && inputImage) {
       const img = new Image();
       img.onload = function () {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        canvasHidden.width = img.width;
-        canvasHidden.height = img.height;
-        ctx.drawImage(img, 0, 0);
+        const targetWidth = 480;
+        const targetHeight = 450;
+        
+        // Calculate scaled dimensions
+        const scale = Math.min(targetWidth / img.width, targetHeight / img.height);
+        const scaledWidth = img.width * scale;
+        const scaledHeight = img.height * scale;
+        
+        // Set canvas dimensions
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        canvasHidden.width = targetWidth;
+        canvasHidden.height = targetHeight;
+        
+        // Clear canvases
+        ctx.clearRect(0, 0, targetWidth, targetHeight);
+        ctx2.clearRect(0, 0, targetWidth, targetHeight);
+        
+        // Draw the image centered
+        const xOffset = (targetWidth - scaledWidth) / 2;
+        const yOffset = (targetHeight - scaledHeight) / 2;
+        ctx.drawImage(img, xOffset, yOffset, scaledWidth, scaledHeight);
       };
       img.src = inputImage;
     }
@@ -81,17 +115,83 @@ const Canvas = () => {
     await dispatch(processImage(canvasFile,maskFile,model_name))
   }
 
+  const handleUndo = () =>{
+    if (ctx && prevImage) {
+      const img = new Image();
+      img.onload = function () {
+        const targetWidth = 480;
+        const targetHeight = 450;
+        
+        // Calculate scaled dimensions
+        const scale = Math.min(targetWidth / img.width, targetHeight / img.height);
+        const scaledWidth = img.width * scale;
+        const scaledHeight = img.height * scale;
+        
+        // Set canvas dimensions
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        canvasHidden.width = targetWidth;
+        canvasHidden.height = targetHeight;
+        
+        // Clear canvases
+        ctx.clearRect(0, 0, targetWidth, targetHeight);
+        ctx2.clearRect(0, 0, targetWidth, targetHeight);
+        
+        // Draw the image centered
+        const xOffset = (targetWidth - scaledWidth) / 2;
+        const yOffset = (targetHeight - scaledHeight) / 2;
+        ctx.drawImage(img, xOffset, yOffset, scaledWidth, scaledHeight);
+      };
+      img.src = prevImage;
+    }
+  }
+
+  useEffect(()=>{
+    if(redoFlag){
+      if (ctx && currentImage) {
+        const img = new Image();
+        img.onload = function () {
+          const targetWidth = 480;
+          const targetHeight = 450;
+          
+          // Calculate scaled dimensions
+          const scale = Math.min(targetWidth / img.width, targetHeight / img.height);
+          const scaledWidth = img.width * scale;
+          const scaledHeight = img.height * scale;
+          
+          // Set canvas dimensions
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
+          canvasHidden.width = targetWidth;
+          canvasHidden.height = targetHeight;
+          
+          // Clear canvases
+          ctx.clearRect(0, 0, targetWidth, targetHeight);
+          ctx2.clearRect(0, 0, targetWidth, targetHeight);
+          
+          // Draw the image centered
+          const xOffset = (targetWidth - scaledWidth) / 2;
+          const yOffset = (targetHeight - scaledHeight) / 2;
+          ctx.drawImage(img, xOffset, yOffset, scaledWidth, scaledHeight);
+        };
+        img.src = currentImage;
+      }
+      dispatch(setRedoFlag(false))
+    }
+  },[redoFlag])
+
 
   return (
-    <>
+    <div className='cont1'>
         <div>
             <canvas id="canvas" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}></canvas>
             <canvas id="canvas-hidden" hidden></canvas>
         </div>
-        <div>
+        <div className='cont2'>
             <button id="sendServer" disabled={isLoading} onClick={handleSubmit}>Done</button>
+            <button id="undoBtn" onClick={handleUndo} disabled={isLoading}>Undo</button>
         </div>
-    </>
+    </div>
   )
 }
 

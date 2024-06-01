@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const developmentURL = "http://127.0.0.1:5000"
-const productionURL = ""
+const productionURL = "http://65.2.121.107"
 
 axios.defaults.baseURL = developmentURL
 

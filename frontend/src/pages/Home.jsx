@@ -4,17 +4,30 @@ import ModelSelector from '../components/ModelSelector'
 import ThicknessSlider from '../components/ThicknessSlider'
 import Canvas from '../components/Canvas'
 import ModelOutput from '../components/ModelOutput'
-import UserActions from '../components/UserActions'
+import Header from '../components/Header'
+import { useSelector } from 'react-redux'
+import Loader from '../components/Loader'
 
 export const Home = () => {
+  const {isLoading} = useSelector((state) => state.myReducer)
+
+  if(isLoading)
+    return(
+      <Loader/>
+  )
+  else
   return (
       <div>
-        <FileSelector/>
-        <ModelSelector/>
-        <ThicknessSlider/>
-        <Canvas/>
-        <ModelOutput/>
-        <UserActions/>
+        <Header/>
+        <div className='inputs'>
+          <FileSelector/>
+          <ModelSelector/>
+          <ThicknessSlider/>
+        </div>
+        <div className='myCanvas'>
+          <Canvas/>
+          <ModelOutput/>
+        </div>
       </div>
   )
 }

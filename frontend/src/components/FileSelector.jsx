@@ -1,6 +1,6 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
-import { setInputImage } from '../reducers/myReducer';
+import { setInputImage,setPrevImage } from '../reducers/myReducer';
 
 const FileSelector = () => {
 
@@ -12,6 +12,7 @@ const FileSelector = () => {
 
     reader.onload = (event) => {
       dispatch(setInputImage(event.target.result));
+      dispatch(setPrevImage(event.target.result))
     };
 
     if (file) {
@@ -21,7 +22,7 @@ const FileSelector = () => {
 
 
   return (
-    <input type="file" id="fileInput" accept="image/*" onChange={handleFileChange}></input>
+    <input type="file" id="fileInput" accept="image/*" onChange={handleFileChange}/>
   )
 }
 
